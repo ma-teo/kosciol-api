@@ -1,0 +1,48 @@
+const fs = require('fs')
+const https = require('https')
+const formidable = require('formidable')
+const jimp = require('jimp')
+const data = require('./data/data.json')
+const secret = require('./data/secret.json')
+
+const recaptchaVerify = (req, res, callback) => {
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret.recaptcha_secret_key}&response=${req.query.token}`
+  https.get(url, resp => {
+    resp.setEncoding('utf8')
+    resp.on('data', data => {
+      JSON.parse(data).success ? callback(req, res) : res.json({ success: false })
+    })
+  }).on('error', () => res.json({ success: false }))
+}
+
+const checkToken = (req, res, callback) => {
+  secret.token === req.query.token ? callback : res.json({ success: false })
+}
+
+const formParse = (req, res, callback) => {
+  formidable().parse(req, (err, fields, files) => err ? res.json({ success: false }) : readFile(req, { fields, files }, res, callback))
+}
+
+const readFile = (req, { fields, files }, res, callback) => {
+  files.image ? jimp.read(files.image.path).then(img => {
+    Promise.all([
+      img.resize(1920, jimp.AUTO).quality(80).write(`src/media/1920/${files.image.name}`),
+      img.resize(1280, jimp.AUTO).quality(80).write(`src/media/1280/${files.image.name}`),
+      img.resize(640, jimp.AUTO).quality(80).write(`src/media/640/${files.image.name}`)
+    ])
+    .then(callback(req, {fields, files}, res))
+  })
+  : callback(req, {fields, files}, res)
+}
+
+const writeFile = (res) => {
+  fs.writeFile('src/data/data.json', JSON.stringify(data), err => err ? res.json({ success: false }) : res.json({ data: data }))
+}
+
+module.exports = {
+  recaptchaVerify,
+  checkToken,
+  formParse,
+  readFile,
+  writeFile
+}
