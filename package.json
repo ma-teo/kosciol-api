@@ -8,6 +8,5 @@
     "formidable": "^1.2.2",
     "jimp": "^0.14.0",
     "url-slug": "^2.3.1"
-  },
-  "browserslist": "defaults"
+  }
 }
