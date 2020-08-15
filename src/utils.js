@@ -26,9 +26,9 @@ const formParse = (req, res, callback) => {
 const readFile = (req, { fields, files }, res, callback) => {
   files.image ? jimp.read(files.image.path).then(img => {
     Promise.all([
-      img.resize(1920, jimp.AUTO).quality(80).write(`src/media/1920/${files.image.name}`),
-      img.resize(1280, jimp.AUTO).quality(80).write(`src/media/1280/${files.image.name}`),
-      img.resize(640, jimp.AUTO).quality(80).write(`src/media/640/${files.image.name}`)
+      img.resize(1920, jimp.AUTO).quality(80).write(`media/1920/${files.image.name}`),
+      img.resize(1280, jimp.AUTO).quality(80).write(`media/1280/${files.image.name}`),
+      img.resize(640, jimp.AUTO).quality(80).write(`media/640/${files.image.name}`)
     ])
     .then(callback(req, {fields, files}, res))
   })

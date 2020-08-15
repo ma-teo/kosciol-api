@@ -13,7 +13,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-app.get('/media/*', (req, res) => res.sendFile(path.join(__dirname, 'src', req.path)))
+app.get('/media/*', (req, res) => res.sendFile(path.join(__dirname, req.path)))
 
 app.get('/data', (req, res) => getData(req, res))
 app.get('/data/:type', (req, res) => getType(req, res))
