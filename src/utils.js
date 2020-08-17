@@ -8,7 +8,6 @@ const secret = require('./data/secret.json')
 const recaptchaVerify = (req, res, callback) => {
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret.recaptcha_secret_key}&response=${req.query.token}`
   https.get(url, resp => {
-    resp.setEncoding('utf8')
     resp.on('data', data => {
       JSON.parse(data).success ? callback(req, res) : res.json({ success: false })
     })
