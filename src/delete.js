@@ -1,4 +1,4 @@
-const data = require('./data/data.json')
+const data = require('../data/data.json')
 const { writeFile } = require('./utils')
 
 const deleteData = (req, res) => {

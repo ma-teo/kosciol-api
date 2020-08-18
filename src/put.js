@@ -1,5 +1,5 @@
 const slugify = require('url-slug')
-const data = require('./data/data.json')
+const data = require('../data/data.json')
 const { writeFile } = require('./utils')
 
 const putData = (req, { fields, files }, res) => {
