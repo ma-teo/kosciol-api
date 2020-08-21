@@ -12,7 +12,7 @@ require('dotenv').config()
 const app = express()
 
 app.use(cors({
-  origin: process.env.REACT_APP_URL,
+  origin: process.env.REACT_APP_SITE_URL,
   credentials: true
 }))
 app.use(bodyParser.json())
