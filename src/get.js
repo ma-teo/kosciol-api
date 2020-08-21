@@ -2,8 +2,7 @@ const data = require('../data/data.json')
 const secret = require('../data/secret.json')
 
 const getData = (req, res) => {
-  const logged = secret.token === req.query.token ? true : false
-  res.json({ data: data, logged: logged })
+  res.cookie('logged', secret.token === req.query.token).json(data)
 }
 
 const getType = (req, res) => {

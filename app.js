@@ -7,9 +7,14 @@ const { postData, postAdmin } = require('./src/post')
 const { putData } = require('./src/put')
 const { deleteData } = require('./src/delete')
 
+require('dotenv').config()
+
 const app = express()
 
-app.use(cors())
+app.use(cors({
+  origin: process.env.REACT_APP_URL,
+  credentials: true
+}))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => getData(req, res))
