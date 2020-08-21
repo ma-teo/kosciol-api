@@ -3,8 +3,7 @@ const secret = require('../data/secret.json')
 const { cookieOptions } = require('./utils')
 
 const getData = (req, res) => {
-  secret.token === req.query.token ? res.cookie('token', secret.token, cookieOptions) : res.clearCookie('token')
-  res.json(data)
+  res.cookie('logged', secret.token === req.query.token, cookieOptions).json(data)
 }
 
 const getType = (req, res) => {
