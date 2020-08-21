@@ -5,6 +5,11 @@ const jimp = require('jimp')
 const data = require('../data/data.json')
 const secret = require('../data/secret.json')
 
+const cookieOptions = {
+  domain: process.env.REACT_APP_COOKIE_DOMAIN,
+  path: '/'
+}
+
 const recaptchaVerify = (req, res, callback) => {
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret.recaptcha_secret_key}&response=${req.query.token}`
   https.get(url, resp => {
@@ -16,11 +21,8 @@ const recaptchaVerify = (req, res, callback) => {
 
 const login = (req, res) => {
   secret.token = req.query.token
-  fs.writeFile('data/secret.json', JSON.stringify(secret), err => err ? res.json({ success: false }) :
-    res.cookie('token', secret.token, {
-      domain: process.env.REACT_APP_COOKIE_DOMAIN,
-      path: '/'
-    }).json({ logged: true })
+  fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
+    err ? res.json({ success: false }) : res.cookie('token', secret.token, cookieOptions).json({ token: secret.token })
   )
 }
 
@@ -49,6 +51,7 @@ const writeFile = (res) => {
 }
 
 module.exports = {
+  cookieOptions,
   recaptchaVerify,
   login,
   checkToken,
