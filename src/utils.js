@@ -22,7 +22,7 @@ const recaptchaVerify = (req, res, callback) => {
 const login = (req, res) => {
   secret.token = req.query.token
   fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
-    err ? res.json({ success: false }) : res.cookie('token', secret.token, cookieOptions).json({ token: secret.token })
+    err ? res.json({ success: false }) : res.cookie('token', secret.token, cookieOptions).json({ logged: true })
   )
 }
 
