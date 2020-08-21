@@ -1,12 +1,12 @@
 const data = require('../data/data.json')
 const secret = require('../data/secret.json')
-const { cookieOptions } = require('./utils')
 
 const getData = (req, res) => {
-  res.cookie('logged', secret.token === req.query.token, {
+  secret.token === req.query.token ? res.cookie('token', secret.token, {
     domain: process.env.REACT_APP_COOKIE_DOMAIN,
     path: '/'
-  }).json(data)
+  }) : res.clearCookie('token')
+  res.json(data)
 }
 
 const getType = (req, res) => {
