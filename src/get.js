@@ -4,8 +4,7 @@ const secret = require('../data/secret.json')
 const getData = (req, res) => {
   res.cookie('logged', secret.token === req.query.token, {
     domain: process.env.REACT_APP_COOKIE_DOMAIN,
-    path: '/',
-    secure: true
+    path: '/'
   }).json(data)
 }
 

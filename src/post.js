@@ -2,7 +2,7 @@ const fs = require('fs')
 const slugify = require('url-slug')
 const secret = require('../data/secret.json')
 const data = require('../data/data.json')
-const { writeFile } = require('./utils')
+const { writeFile, login } = require('./utils')
 
 const postData = (req, { fields, files }, res) => {
   data[req.params.type].push({
@@ -19,13 +19,8 @@ const postData = (req, { fields, files }, res) => {
 }
 
 const postAdmin = (req, res) => {
-  secret.token = req.query.token
-  fs.writeFile('data/secret.json', JSON.stringify(secret), err => err ? res.json({ success: false }) :
-
-    secret.users.find(user => user.name === req.body.username && user.pass === req.body.password)
-    ? res.json({ token: secret.token })
-    : res.json({ success: false })
-  )
+  secret.users.find(user => user.name === req.body.username && user.pass === req.body.password)
+  ? login(req, res) : res.json({ success: false })
 }
 
 module.exports = {
