@@ -5,11 +5,13 @@ const getData = (req, res) => {
   secret.token === req.query.token
   ? res.cookie('token', secret.token, {
     domain: process.env.REACT_APP_COOKIE_DOMAIN,
-    path: '/'
+    path: '/',
+    secure: true
   })
   : res.clearCookie('token', {
     domain: process.env.REACT_APP_COOKIE_DOMAIN,
-    path: '/'
+    path: '/',
+    secure: true
   })
   res.json(data)
 }

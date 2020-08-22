@@ -19,7 +19,8 @@ const login = (req, res) => {
   fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
     err ? res.json({ success: false }) : res.cookie('token', secret.token, {
       domain: process.env.REACT_APP_COOKIE_DOMAIN,
-      path: '/'
+      path: '/',
+      secure: true
     }).json({ logged: true })
   )
 }
