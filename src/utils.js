@@ -25,8 +25,19 @@ const login = (req, res) => {
   )
 }
 
+const logout = (req, res) => {
+  secret.token = undefined
+  fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
+    err ? res.json({ success: false }) : res.clearCookie('token', {
+      domain: process.env.REACT_APP_COOKIE_DOMAIN,
+      path: '/',
+      secure: true
+    }).json({ logged: false })
+  )
+}
+
 const checkToken = (req, res, callback) => {
-  secret.token === req.query.token ? callback : res.json({ success: false })
+  req.cookies.token && secret.token === req.cookies.token ? callback : res.json({ success: false })
 }
 
 const formParse = (req, res, callback) => {
@@ -52,6 +63,7 @@ const writeFile = (res) => {
 module.exports = {
   recaptchaVerify,
   login,
+  logout,
   checkToken,
   formParse,
   readFile,

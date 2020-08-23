@@ -2,7 +2,7 @@ const data = require('../data/data.json')
 const secret = require('../data/secret.json')
 
 const getData = (req, res) => {
-  secret.token === req.query.token
+  req.cookies.token && secret.token === req.cookies.token
   ? res.cookie('token', secret.token, {
     domain: process.env.REACT_APP_COOKIE_DOMAIN,
     path: '/',

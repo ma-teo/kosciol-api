@@ -1,4 +1,3 @@
-const fs = require('fs')
 const slugify = require('url-slug')
 const secret = require('../data/secret.json')
 const data = require('../data/data.json')
