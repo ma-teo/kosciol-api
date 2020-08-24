@@ -17,19 +17,19 @@ const recaptchaVerify = (req, res, callback) => {
 const login = (req, res) => {
   secret.token = req.query.token
   fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
-    err ? res.json({ success: false }) : res.cookie('token', secret.token, {domain: process.env.REACT_APP_COOKIE_DOMAIN}).json({ success: true })
+    err ? res.json({ success: false }) : res.json({ success: true })
   )
 }
 
 const logout = (req, res) => {
   secret.token = undefined
   fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
-    err ? res.json({ success: false }) : res.clearCookie('token', {domain: process.env.REACT_APP_COOKIE_DOMAIN}).json({ success: true })
+    err ? res.json({ success: false }) : res.json({ success: true })
   )
 }
 
 const checkToken = (req, res, callback) => {
-  req.cookies.token && secret.token === req.cookies.token ? callback : res.json({ success: false })
+  secret.token === req.query.token ? callback : res.json({ success: false })
 }
 
 const formParse = (req, res, callback) => {
