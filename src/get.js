@@ -1,6 +1,7 @@
 const data = require('../data/data.json')
 const secret = require('../data/secret.json')
 
+
 const getData = (req, res) => {
   req.cookies.token && secret.token === req.cookies.token
   ? res.cookie('token', secret.token, {
