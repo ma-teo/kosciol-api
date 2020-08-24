@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
-const { recaptchaVerify, logout, checkToken, formParse } = require('./src/utils')
+const { recaptchaVerify, login, checkToken, formParse } = require('./src/utils')
 const { getData, getType, getSlug } = require('./src/get')
 const { postData, postAdmin } = require('./src/post')
 const { putData } = require('./src/put')
@@ -20,7 +20,6 @@ app.post('/:type', (req, res) => checkToken(req, res, formParse(req, res, postDa
 app.put('/:type/:slug', (req, res) => checkToken(req, res, formParse(req, res, putData)))
 app.delete('/:type/:slug', (req, res) => checkToken(req, res, deleteData(req, res)))
 
-app.post('/', (req, res) => recaptchaVerify(req, res, postAdmin))
-app.put('/', (req, res) => logout(req, res))
+app.post('/', (req, res) => req.query.token ? recaptchaVerify(req, res, postAdmin) : login(req, res))
 
 app.listen(5000)

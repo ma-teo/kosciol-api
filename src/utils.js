@@ -21,13 +21,6 @@ const login = (req, res) => {
   )
 }
 
-const logout = (req, res) => {
-  secret.token = undefined
-  fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
-    err ? res.json({ success: false }) : res.json({ success: true })
-  )
-}
-
 const checkToken = (req, res, callback) => {
   secret.token === req.query.token ? callback : res.json({ success: false })
 }
@@ -55,7 +48,6 @@ const writeFile = res => {
 module.exports = {
   recaptchaVerify,
   login,
-  logout,
   checkToken,
   formParse,
   readFile,
