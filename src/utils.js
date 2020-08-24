@@ -5,6 +5,7 @@ const jimp = require('jimp')
 const data = require('../data/data.json')
 const secret = require('../data/secret.json')
 
+
 const recaptchaVerify = (req, res, callback) => {
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret.recaptcha_secret_key}&response=${req.query.token}`
   https.get(url, resp => {
