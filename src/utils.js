@@ -17,14 +17,20 @@ const recaptchaVerify = (req, res, callback) => {
 const login = (req, res) => {
   secret.token = req.query.token
   fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
-    err ? res.json({ success: false }) : res.cookie('token', secret.token, {domain: process.env.REACT_APP_COOKIE_DOMAIN}).json({ success: true })
+    err ? res.json({ success: false }) : res.cookie('token', secret.token, {
+      domain: process.env.REACT_APP_COOKIE_DOMAIN,
+      secure: true
+    }).json({ success: true })
   )
 }
 
 const logout = (req, res) => {
   secret.token = undefined
   fs.writeFile('data/secret.json', JSON.stringify(secret), err =>
-    err ? res.json({ success: false }) : res.clearCookie('token', {domain: process.env.REACT_APP_COOKIE_DOMAIN}).json({ success: true })
+    err ? res.json({ success: false }) : res.clearCookie('token', {
+      domain: process.env.REACT_APP_COOKIE_DOMAIN,
+      secure: true
+    }).json({ success: true })
   )
 }
 
