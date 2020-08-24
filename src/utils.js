@@ -48,8 +48,8 @@ const readFile = (req, { fields, files }, res, callback) => {
   : callback(req, {fields, files}, res)
 }
 
-const writeFile = (res) => {
-  fs.writeFile('data/data.json', JSON.stringify(data), err => err ? res.json({ success: false }) : res.json({ data: data }))
+const writeFile = res => {
+  fs.writeFile('data/data.json', JSON.stringify(data), err => err ? res.json({ success: false }) : res.json({ success: true, data: data }))
 }
 
 module.exports = {
