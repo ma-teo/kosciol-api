@@ -1,6 +1,5 @@
 const fs = require('fs')
 const https = require('https')
-const formidable = require('formidable')
 const jimp = require('jimp')
 const data = require('../data/data.json')
 const secret = require('../data/secret.json')
@@ -21,35 +20,34 @@ const login = (req, res) => {
   )
 }
 
-const checkToken = (req, res, callback) => {
-  secret.token === req.query.token ? callback : res.json({ success: false })
-}
-
-const formParse = (req, res, callback) => {
-  formidable().parse(req, (err, fields, files) => err ? res.json({ success: false }) : readFile(req, { fields, files }, res, callback))
-}
-
-const readFile = (req, { fields, files }, res, callback) => {
-  files.image ? jimp.read(files.image.path).then(img => {
-    Promise.all([
-      img.resize(1920, jimp.AUTO).quality(80).write(`../kosciol-media/1920/${files.image.name}`),
-      img.resize(1280, jimp.AUTO).quality(80).write(`../kosciol-media/1280/${files.image.name}`),
-      img.resize(640, jimp.AUTO).quality(80).write(`../kosciol-media/640/${files.image.name}`)
-    ])
-    .then(callback(req, {fields, files}, res))
+const checkToken = req => {
+  return new Promise((resolve, reject) => {
+    secret.token === req.query.token ? resolve() : reject('checkToken error')
   })
-  : callback(req, {fields, files}, res)
 }
 
-const writeFile = res => {
-  fs.writeFile('data/data.json', JSON.stringify(data), err => err ? res.json({ success: false }) : res.json({ success: true, data: data }))
+const readFile = req => {
+  jimp.read(req.file.buffer).then(img => {
+    Promise.all([
+      img.resize(1920, jimp.AUTO).quality(80).write(`../kosciol-media/1920/${req.file.originalname}`),
+      img.resize(1280, jimp.AUTO).quality(80).write(`../kosciol-media/1280/${req.file.originalname}`),
+      img.resize(640, jimp.AUTO).quality(80).write(`../kosciol-media/640/${req.file.originalname}`)
+    ])
+    .catch('readFile error')
+  })
+  .catch('readFile error')
+}
+
+const writeFile = () => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile('data/data.json', JSON.stringify(data), err => err ? reject('writeFile error') : resolve(data))
+  })
 }
 
 module.exports = {
   recaptchaVerify,
   login,
   checkToken,
-  formParse,
   readFile,
   writeFile
 }

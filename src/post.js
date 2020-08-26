@@ -1,20 +1,25 @@
 const slugify = require('url-slug')
 const secret = require('../data/secret.json')
 const data = require('../data/data.json')
-const { writeFile, login } = require('./utils')
+const { login, checkToken, readFile, writeFile } = require('./utils')
 
-const postData = (req, { fields, files }, res) => {
-  data[req.params.type].push({
-    cat_name: fields.cat_name,
-    cat_slug: fields.cat_name ? slugify(fields.cat_name) : undefined,
-    content: fields.content,
-    date: fields.date,
-    image: files.image ? files.image.name : fields.image,
-    name: fields.name,
-    slug: fields.name ? slugify(fields.name) : undefined
+const postData = (req, res) => {
+  checkToken(req)
+  .then(req.file ? readFile(req) : undefined)
+  .then(() => {
+    data[req.params.type].push({
+      cat_name: req.body.cat_name,
+      cat_slug: req.body.cat_name ? slugify(req.body.cat_name) : undefined,
+      content: req.body.content,
+      date: req.body.date,
+      image: req.file ? req.file.originalname : req.body.image,
+      name: req.body.name,
+      slug: req.body.name ? slugify(req.body.name) : undefined
+    })
   })
-
-  writeFile(res)
+  .then(writeFile)
+  .then(data => res.json({ success: true, data: data }))
+  .catch(error => res.json({ success: false, message: error }))
 }
 
 const postAdmin = (req, res) => {
