@@ -1,30 +1,42 @@
 const { checkToken, saveImage } = require('./utils')
 const { addData, editData, removeData, saveData } = require('./data')
 
-const postData = (req, res) => {
-  checkToken(req)
-  .then(req.file && saveImage(req))
-  .then(addData(req))
-  .then(saveData)
-  .then(data => res.json({ success: true, data: data }))
-  .catch(error => res.json({ success: false, message: error }))
+const postData = async (req, res) => {
+  try {
+    checkToken(req)
+    req.file && await saveImage(req)
+    addData(req)
+    const data = await saveData()
+    res.json({ success: true, data: data })
+  }
+  catch {
+    res.json({ success: false })
+  }
 }
 
-const putData = (req, res) => {
-  checkToken(req)
-  .then(req.file && saveImage(req))
-  .then(editData(req))
-  .then(saveData)
-  .then(data => res.json({ success: true, data: data }))
-  .catch(error => res.json({ success: false, message: error }))
+const putData = async (req, res) => {
+  try {
+    checkToken(req)
+    req.file && await saveImage(req)
+    editData(req)
+    const data = await saveData()
+    res.json({ success: true, data: data })
+  }
+  catch {
+    res.json({ success: false })
+  }
 }
 
-const deleteData = (req, res) => {
-  checkToken(req)
-  .then(removeData(req))
-  .then(saveData)
-  .then(data => res.json({ success: true, data: data }))
-  .catch(error => res.json({ success: false, message: error }))
+const deleteData = async (req, res) => {
+  try {
+    checkToken(req)
+    removeData(req)
+    const data = await saveData()
+    res.json({ success: true, data: data })
+  }
+  catch {
+    res.json({ success: false })
+  }
 }
 
 module.exports = {

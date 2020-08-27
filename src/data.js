@@ -48,7 +48,7 @@ const removeData = req => {
 
 const saveData = () => {
   return new Promise((resolve, reject) => {
-    fs.writeFile('data/data.json', JSON.stringify(data), err => err ? reject('saveData error') : resolve(data))
+    fs.writeFile('data/data.json', JSON.stringify(data), err => err ? reject() : resolve(data))
   })
 }
 
