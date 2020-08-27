@@ -1,4 +1,4 @@
-# Kościoły Domowe Wrocław API
+# Kościoły Domowe Wrocław
 
 Website written in [NodeJS](https://github.com/nodejs/node)
 
