@@ -30,7 +30,7 @@ const checkToken = req => {
 
 const saveImage = async req => {
   const img = await jimp.read(req.file.buffer)
-  Promise.all([
+  await Promise.all([
     img.resize(1920, jimp.AUTO).quality(80).write(`../kosciol-media/1920/${req.file.originalname}`),
     img.resize(1280, jimp.AUTO).quality(80).write(`../kosciol-media/1280/${req.file.originalname}`),
     img.resize(640, jimp.AUTO).quality(80).write(`../kosciol-media/640/${req.file.originalname}`)
