@@ -46,11 +46,6 @@ const removeData = ({params}) => {
   data[params.type].splice(data[params.type].findIndex(({slug}) => slug === params.slug), 1)
 }
 
-const checkSlug = ({params, body}) => {
-  const item = data[params.type].find(({slug}) => slug === slugify(body.name))
-  if (item) throw new Error()
-}
-
 const saveData = () => {
   return new Promise((resolve, reject) => {
     fs.writeFile('data/data.json', JSON.stringify(data), err => err ? reject() : resolve(data))
@@ -62,6 +57,5 @@ module.exports = {
   addData,
   editData,
   removeData,
-  checkSlug,
   saveData
 }

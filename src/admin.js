@@ -2,9 +2,9 @@ const { recaptchaVerify, checkUser, saveToken } = require('./utils')
 
 const login = async (req, res) => {
   try {
-    await recaptchaVerify(req)
-    checkUser(req)
-    await saveToken(req)
+    await recaptchaVerify(req.query.token)
+    checkUser(req.body)
+    await saveToken(req.query.token)
     res.json({ success: true })
   }
   catch {
@@ -14,7 +14,7 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    await saveToken(req)
+    await saveToken(req.query.token)
     res.json({ success: true })
   }
   catch {
