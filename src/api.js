@@ -1,9 +1,10 @@
 const { checkToken, saveImage } = require('./utils')
-const { addData, editData, removeData, saveData } = require('./data')
+const { addData, editData, removeData, checkSlug, saveData } = require('./data')
 
 const postData = async (req, res) => {
   try {
     checkToken(req)
+    checkSlug(req)
     req.file && await saveImage(req)
     addData(req)
     const data = await saveData()
@@ -17,6 +18,7 @@ const postData = async (req, res) => {
 const putData = async (req, res) => {
   try {
     checkToken(req)
+    checkSlug(req)
     req.file && await saveImage(req)
     editData(req)
     const data = await saveData()

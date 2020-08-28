@@ -8,42 +8,47 @@ const getData = ({params}, res) => {
   res.json(data)
 }
 
-const addData = req => {
-  data[req.params.type].push({
-    cat_name: req.body.cat_name,
-    cat_slug: req.body.cat_name && slugify(req.body.cat_name),
-    content: req.body.content,
-    date: req.body.date,
-    image: req.file ? req.file.originalname : req.body.image,
-    name: req.body.name,
-    slug: req.body.name && slugify(req.body.name)
+const addData = ({params, body, file}) => {
+  data[params.type].push({
+    cat_name: body.cat_name,
+    cat_slug: body.cat_name && slugify(body.cat_name),
+    content: body.content,
+    date: body.date,
+    image: file ? file.originalname : body.image,
+    name: body.name,
+    slug: body.name && slugify(body.name)
   })
 }
 
-const editData = req => {
-  data[req.params.type].splice(data[req.params.type].findIndex(item => item.slug === req.params.slug), 1, {
-    cat_name: req.body.cat_name,
-    cat_slug: req.body.cat_name && slugify(req.body.cat_name),
-    content: req.body.content,
-    date: req.body.date,
-    image: req.file ? req.file.originalname : req.body.image,
-    name: req.body.name,
-    slug: req.body.name && slugify(req.body.name)
+const editData = ({params, body, file}) => {
+  data[params.type].splice(data[params.type].findIndex(({slug}) => slug === params.slug), 1, {
+    cat_name: body.cat_name,
+    cat_slug: body.cat_name && slugify(body.cat_name),
+    content: body.content,
+    date: body.date,
+    image: file ? file.originalname : body.image,
+    name: body.name,
+    slug: body.name && slugify(body.name)
   })
 
-  data.menu.filter(item => item.slug === req.params.slug).map(item => {
-    item.name = req.body.name,
-    item.slug = req.body.name && slugify(req.body.name)
+  data.menu.filter(({slug}) => slug === params.slug).map(item => {
+    item.name = body.name,
+    item.slug = body.name && slugify(body.name)
   })
 
-  data.arts.filter(item => item.cat_slug === req.params.slug).map(item => {
-    item.cat_name = req.body.name
-    item.cat_slug = req.body.name && slugify(req.body.name)
+  data.arts.filter(({cat_slug}) => cat_slug === params.slug).map(item => {
+    item.cat_name = body.name
+    item.cat_slug = body.name && slugify(body.name)
   })
 }
 
-const removeData = req => {
-  data[req.params.type].splice(data[req.params.type].findIndex(item => item.slug === req.params.slug), 1)
+const removeData = ({params}) => {
+  data[params.type].splice(data[params.type].findIndex(({slug}) => slug === params.slug), 1)
+}
+
+const checkSlug = ({params, body}) => {
+  const item = data[params.type].find(({slug}) => slug === slugify(body.name))
+  if (item) throw new Error()
 }
 
 const saveData = () => {
@@ -57,5 +62,6 @@ module.exports = {
   addData,
   editData,
   removeData,
+  checkSlug,
   saveData
 }
