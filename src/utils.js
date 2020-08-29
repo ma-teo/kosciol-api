@@ -1,7 +1,7 @@
 const fs = require('fs')
 const https = require('https')
 const jimp = require('jimp')
-const secret = require('../data/secret.json')
+const secret = require('../secret.json')
 
 const recaptchaVerify = token => {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ const checkUser = ({username, password}) => {
 const saveToken = token => {
   return new Promise((resolve, reject) => {
     secret.token = token
-    fs.writeFile('data/secret.json', JSON.stringify(secret), err => err ? reject() : resolve())
+    fs.writeFile('secret.json', JSON.stringify(secret), err => err ? reject() : resolve())
   })
 }
 
@@ -31,9 +31,9 @@ const checkToken = token => {
 const saveImage = async file => {
   const img = await jimp.read(file.buffer)
   await Promise.all([
-    img.resize(1920, jimp.AUTO).quality(80).write(`../kosciol-media/1920/${file.originalname}`),
-    img.resize(1280, jimp.AUTO).quality(80).write(`../kosciol-media/1280/${file.originalname}`),
-    img.resize(640, jimp.AUTO).quality(80).write(`../kosciol-media/640/${file.originalname}`)
+    img.resize(1920, jimp.AUTO).quality(80).write(`../media/1920/${file.originalname}`),
+    img.resize(1280, jimp.AUTO).quality(80).write(`../media/1280/${file.originalname}`),
+    img.resize(640, jimp.AUTO).quality(80).write(`../media/640/${file.originalname}`)
   ])
 }
 

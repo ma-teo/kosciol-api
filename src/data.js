@@ -1,6 +1,6 @@
 const fs = require('fs')
 const slugify = require('url-slug')
-const data = require('../data/data.json')
+const data = require('../../data.json')
 
 const getData = ({params}, res) => {
   params.slug ? res.json(data[params.type].find(({slug}) => slug === params.slug)) :
@@ -48,7 +48,7 @@ const removeData = ({params}) => {
 
 const saveData = () => {
   return new Promise((resolve, reject) => {
-    fs.writeFile('data/data.json', JSON.stringify(data), err => err ? reject() : resolve(data))
+    fs.writeFile('../data.json', JSON.stringify(data), err => err ? reject() : resolve(data))
   })
 }
 
