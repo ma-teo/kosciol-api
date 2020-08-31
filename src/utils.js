@@ -1,7 +1,7 @@
 const fs = require('fs')
 const https = require('https')
 const jimp = require('jimp')
-const secret = require('../secret.json')
+const secret = require('../../secret.json')
 
 const recaptchaVerify = token => {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ const checkUser = ({username, password}) => {
 const saveToken = token => {
   return new Promise((resolve, reject) => {
     secret.token = token
-    fs.writeFile('secret.json', JSON.stringify(secret), err => err ? reject() : resolve())
+    fs.writeFile('../secret.json', JSON.stringify(secret), err => err ? reject() : resolve())
   })
 }
 
