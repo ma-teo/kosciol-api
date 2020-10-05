@@ -1,5 +1,6 @@
 const fs = require('fs')
 const https = require('https')
+const nodemailer = require('nodemailer')
 const jimp = require('jimp')
 const secret = require('../../secret.json')
 
@@ -9,6 +10,23 @@ const recaptchaVerify = token => {
     https.get(url, resp => {
       resp.on('data', data => JSON.parse(data).success ? resolve() : reject())
     }).on('error', reject)
+  })
+}
+
+const sendMail = async body => {
+  nodemailer.createTransport({
+    host: secret.host,
+    port: secret.port,
+    auth: {
+      user: secret.user,
+      pass: secret.pass
+    }
+  })
+  .sendMail({
+    from: `"${body.user}" <${body.email}>`,
+    to: secret.email,
+    subject: 'Formularz kontaktowy - nowa wiadomość',
+    text: body.message
   })
 }
 
@@ -39,6 +57,7 @@ const saveImage = async file => {
 
 module.exports = {
   recaptchaVerify,
+  sendMail,
   checkUser,
   saveToken,
   checkToken,

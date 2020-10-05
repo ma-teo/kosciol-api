@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const { getData } = require('./src/data')
 const { postAdmin } = require('./src/admin')
+const { postContact } = require('./src/contact')
 const { postData, putData, deleteData } = require('./src/api')
 
 const app = express()
@@ -17,9 +18,10 @@ app.get('/:type', getData)
 app.get('/:type/:slug', getData)
 
 app.post('/', postAdmin)
+app.post('/kontakt', postContact)
 
 app.post('/:type', postData)
 app.put('/:type/:slug', putData)
 app.delete('/:type/:slug', deleteData)
 
-app.listen(5000)
+app.listen(3000)
