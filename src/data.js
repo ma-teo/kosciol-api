@@ -4,7 +4,7 @@ const data = require('../../data.json')
 
 const getData = ({params}, res) => {
   const resp =
-    params.slug ? data[params.type].find(({slug}) => slug === params.slug) :
+    params.slug ? data[params.type]?.find(({slug}) => slug === params.slug) :
     params.type ? data[params.type] :
     data
 
