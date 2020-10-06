@@ -3,9 +3,12 @@ const slugify = require('url-slug')
 const data = require('../../data.json')
 
 const getData = ({params}, res) => {
-  params.slug ? res.json(data[params.type].find(({slug}) => slug === params.slug)) :
-  params.type ? res.json(data[params.type]) :
-  res.json(data)
+  const resp =
+    params.slug ? data[params.type].find(({slug}) => slug === params.slug) :
+    params.type ? data[params.type] :
+    data
+
+  resp ? res.json(resp) : res.status(404).end()
 }
 
 const addData = ({params, body, file}) => {
