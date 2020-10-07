@@ -12,6 +12,8 @@ const getData = ({params}, res) => {
 }
 
 const addData = ({params, body, file}) => {
+  if (data[params.type].find(({slug}) => slug === slugify(body.name))) throw new Error()
+
   data[params.type].push({
     cat_name: body.cat_name,
     cat_slug: body.cat_name && slugify(body.cat_name),
@@ -24,6 +26,11 @@ const addData = ({params, body, file}) => {
 }
 
 const editData = ({params, body, file}) => {
+  if (!data[params.type].find(({slug}) => slug === params.slug) || (
+    data[params.type].find(({slug}) => slug === slugify(body.name))
+    && params.slug !== slugify(body.name)
+  )) throw new Error()
+
   data[params.type].splice(data[params.type].findIndex(({slug}) => slug === params.slug), 1, {
     cat_name: body.cat_name,
     cat_slug: body.cat_name && slugify(body.cat_name),
@@ -46,6 +53,8 @@ const editData = ({params, body, file}) => {
 }
 
 const removeData = ({params}) => {
+  if (!data[params.type].find(({slug}) => slug === params.slug)) throw new Error()
+
   data[params.type].splice(data[params.type].findIndex(({slug}) => slug === params.slug), 1)
 }
 

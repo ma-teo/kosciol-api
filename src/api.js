@@ -4,8 +4,8 @@ const { addData, editData, removeData, saveData } = require('./data')
 const postData = async (req, res) => {
   try {
     checkToken(req.query.token)
-    req.file && await saveImage(req.file)
     addData(req)
+    req.file && await saveImage(req.file)
     const data = await saveData()
     res.json({ success: true, data: data })
   }
@@ -17,8 +17,8 @@ const postData = async (req, res) => {
 const putData = async (req, res) => {
   try {
     checkToken(req.query.token)
-    req.file && await saveImage(req.file)
     editData(req)
+    req.file && await saveImage(req.file)
     const data = await saveData()
     res.json({ success: true, data: data })
   }
