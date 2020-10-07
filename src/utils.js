@@ -43,7 +43,7 @@ const saveToken = token => {
 }
 
 const checkToken = token => {
-  if (secret.token !== token) throw new Error()
+  if (!token || secret.token !== token) throw new Error()
 }
 
 const saveImage = async file => {
