@@ -1,5 +1,8 @@
 RewriteEngine On
 
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [R=403,L]
+
 RewriteCond %{REQUEST_URI} /(.+)/$
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ https://api.kosciolwroclaw.pl/%1 [R=301,L]
