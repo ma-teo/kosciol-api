@@ -2,7 +2,7 @@ const fs = require('fs')
 const https = require('https')
 const nodemailer = require('nodemailer')
 const jimp = require('jimp')
-const secret = require('../../secret.json')
+const secret = require('../../data/secret.json')
 
 const recaptchaVerify = token => {
   return new Promise((resolve, reject) => {

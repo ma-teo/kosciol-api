@@ -1,6 +1,6 @@
 const fs = require('fs')
 const slugify = require('url-slug')
-const data = require('../../data.json')
+const data = require('../../data/db.json')
 
 const getData = ({params}, res) => {
   const resp =
