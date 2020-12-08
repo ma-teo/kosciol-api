@@ -2,7 +2,8 @@ const fs = require('fs')
 const https = require('https')
 const nodemailer = require('nodemailer')
 const jimp = require('jimp')
-const secret = require('../../data/secret.json')
+const paths = require('./paths')
+const secret = require(paths.SECRET_PATH)
 
 const recaptchaVerify = token => {
   return new Promise((resolve, reject) => {
@@ -38,7 +39,7 @@ const checkUser = ({username, password}) => {
 const saveToken = token => {
   return new Promise((resolve, reject) => {
     secret.token = token
-    fs.writeFile('../secret.json', JSON.stringify(secret), err => err ? reject() : resolve())
+    fs.writeFile(paths.SECRET_PATH, JSON.stringify(secret), err => err ? reject() : resolve())
   })
 }
 
@@ -49,9 +50,9 @@ const checkToken = token => {
 const saveImage = async file => {
   const img = await jimp.read(file.buffer)
   await Promise.all([
-    img.resize(1920, jimp.AUTO).quality(80).write(`../media/1920/${file.originalname}`),
-    img.resize(1280, jimp.AUTO).quality(80).write(`../media/1280/${file.originalname}`),
-    img.resize(640, jimp.AUTO).quality(80).write(`../media/640/${file.originalname}`)
+    img.resize(1920, jimp.AUTO).quality(80).write(`${paths.MEDIA_PATH}/1920/${file.originalname}`),
+    img.resize(1280, jimp.AUTO).quality(80).write(`${paths.MEDIA_PATH}/1280/${file.originalname}`),
+    img.resize(640, jimp.AUTO).quality(80).write(`${paths.MEDIA_PATH}/640/${file.originalname}`)
   ])
 }
 

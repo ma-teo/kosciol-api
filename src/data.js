@@ -1,6 +1,7 @@
 const fs = require('fs')
 const slugify = require('url-slug')
-const data = require('../../data/db.json')
+const paths = require('./paths')
+const data = require(paths.DB_PATH)
 
 const getData = ({params}, res) => {
   const resp =
@@ -60,7 +61,7 @@ const removeData = ({params}) => {
 
 const saveData = () => {
   return new Promise((resolve, reject) => {
-    fs.writeFile('../data.json', JSON.stringify(data), err => err ? reject() : resolve(data))
+    fs.writeFile(paths.DB_PATH, JSON.stringify(data), err => err ? reject() : resolve(data))
   })
 }
 
